@@ -36,7 +36,7 @@ func getProdukByID(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	// Fixed typo here: http.error -> http.Error
+	
 	http.Error(w, "Produk tidak tersedia", http.StatusNotFound)
 }
 
