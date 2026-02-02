@@ -20,7 +20,7 @@ func NewKategoriRepository() KategoriRepository {
 }
 
 func (r *kategoriRepository) GetAll() ([]domain.Kategori, error) {
-	query := `SELECT id, nama, deskripsi FROM kategori`
+	query := `SELECT id, nama, deskripsi FROM kategori /* kategori_getall */`
 	rows, err := config.DB.Query(query)
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func (r *kategoriRepository) GetAll() ([]domain.Kategori, error) {
 }
 
 func (r *kategoriRepository) GetByID(id int) (domain.Kategori, error) {
-	query := `SELECT id, nama, deskripsi FROM kategori WHERE id = $1`
+	query := `SELECT id, nama, deskripsi FROM kategori WHERE id = $1 /* kategori_getbyid */`
 	var k domain.Kategori
 	err := config.DB.QueryRow(query, id).Scan(&k.ID, &k.Nama, &k.Deskripsi)
 	if err != nil {
@@ -50,7 +50,7 @@ func (r *kategoriRepository) GetByID(id int) (domain.Kategori, error) {
 }
 
 func (r *kategoriRepository) Create(kategori domain.Kategori) (domain.Kategori, error) {
-	query := `INSERT INTO kategori (nama, deskripsi) VALUES ($1, $2) RETURNING id`
+	query := `INSERT INTO kategori (nama, deskripsi) VALUES ($1, $2) RETURNING id /* kategori_create */`
 	err := config.DB.QueryRow(query, kategori.Nama, kategori.Deskripsi).Scan(&kategori.ID)
 	if err != nil {
 		return domain.Kategori{}, err
@@ -59,7 +59,7 @@ func (r *kategoriRepository) Create(kategori domain.Kategori) (domain.Kategori, 
 }
 
 func (r *kategoriRepository) Update(id int, kategori domain.Kategori) (domain.Kategori, error) {
-	query := `UPDATE kategori SET nama = $1, deskripsi = $2 WHERE id = $3 RETURNING id, nama, deskripsi`
+	query := `UPDATE kategori SET nama = $1, deskripsi = $2 WHERE id = $3 RETURNING id, nama, deskripsi /* kategori_update */`
 	err := config.DB.QueryRow(query, kategori.Nama, kategori.Deskripsi, id).
 		Scan(&kategori.ID, &kategori.Nama, &kategori.Deskripsi)
 	if err != nil {
@@ -69,7 +69,7 @@ func (r *kategoriRepository) Update(id int, kategori domain.Kategori) (domain.Ka
 }
 
 func (r *kategoriRepository) Delete(id int) error {
-	query := `DELETE FROM kategori WHERE id = $1`
+	query := `DELETE FROM kategori WHERE id = $1 /* kategori_delete */`
 	result, err := config.DB.Exec(query, id)
 	if err != nil {
 		return err

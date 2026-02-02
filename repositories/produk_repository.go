@@ -28,7 +28,7 @@ func NewProdukRepository() ProdukRepository {
 }
 
 func (r *produkRepository) GetAll() ([]domain.Produk, error) {
-	query := `SELECT p.id, p.nama, p.harga, p.stok, p.id_kategori, k.nama as kategori_nama
+	query := `SELECT p.id, p.nama, p.harga, p.stok, p.id_kategori, k.nama as kategori_nama /* produk_getall */
 	          FROM produk p
 	          LEFT JOIN kategori k ON p.id_kategori = k.id`
 	rows, err := config.DB.Query(query)
@@ -50,7 +50,7 @@ func (r *produkRepository) GetAll() ([]domain.Produk, error) {
 }
 
 func (r *produkRepository) GetByID(id int) (domain.Produk, error) {
-	query := `SELECT p.id, p.nama, p.harga, p.stok, p.id_kategori, k.nama as kategori_nama
+	query := `SELECT p.id, p.nama, p.harga, p.stok, p.id_kategori, k.nama as kategori_nama /* produk_getbyid */
 	          FROM produk p
 	          LEFT JOIN kategori k ON p.id_kategori = k.id
 	          WHERE p.id = $1`
@@ -63,7 +63,7 @@ func (r *produkRepository) GetByID(id int) (domain.Produk, error) {
 }
 
 func (r *produkRepository) Create(produk domain.Produk) (domain.Produk, error) {
-	query := `INSERT INTO produk (nama, harga, stok, id_kategori) VALUES ($1, $2, $3, $4) RETURNING id`
+	query := `INSERT INTO produk (nama, harga, stok, id_kategori) VALUES ($1, $2, $3, $4) RETURNING id /* produk_create */`
 	err := config.DB.QueryRow(query, produk.Nama, produk.Harga, produk.Stok, produk.ID_Kategori).Scan(&produk.ID)
 	if err != nil {
 		return domain.Produk{}, err
@@ -74,7 +74,7 @@ func (r *produkRepository) Create(produk domain.Produk) (domain.Produk, error) {
 }
 
 func (r *produkRepository) Update(id int, produk domain.Produk) (domain.Produk, error) {
-	query := `UPDATE produk SET nama = $1, harga = $2, stok = $3, id_kategori = $4 WHERE id = $5`
+	query := `UPDATE produk SET nama = $1, harga = $2, stok = $3, id_kategori = $4 WHERE id = $5 /* produk_update */`
 	_, err := config.DB.Exec(query, produk.Nama, produk.Harga, produk.Stok, produk.ID_Kategori, id)
 	if err != nil {
 		return domain.Produk{}, err
@@ -85,7 +85,7 @@ func (r *produkRepository) Update(id int, produk domain.Produk) (domain.Produk, 
 }
 
 func (r *produkRepository) Delete(id int) error {
-	query := `DELETE FROM produk WHERE id = $1`
+	query := `DELETE FROM produk WHERE id = $1 /* produk_delete */`
 	result, err := config.DB.Exec(query, id)
 	if err != nil {
 		return err

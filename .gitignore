@@ -1,1 +1,9 @@
-.env
+.env.env
+*.exe
+*.dll
+*.so
+*.bin
+*.o
+*.a
+*.out
+
