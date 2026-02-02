@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	_ "github.com/lib/pq"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/spf13/viper"
 )
 
@@ -25,11 +25,12 @@ func ConnectDB() error {
 	}
 
 	var err error
-	DB, err = sql.Open("postgres", dbURL)
+	DB, err = sql.Open("pgx", dbURL)
 	if err != nil {
 		return err
 	}
 
+	// Configure connection pool for Supabase pooler
 	DB.SetMaxOpenConns(10)
 	DB.SetMaxIdleConns(2)
 	DB.SetConnMaxLifetime(300)
