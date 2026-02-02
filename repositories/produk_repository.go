@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"kasir-api/config"
 	"kasir-api/domain"
 )
